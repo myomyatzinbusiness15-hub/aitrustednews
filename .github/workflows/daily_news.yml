@@ -1,6 +1,10 @@
 name: Daily News Update
 on:
   workflow_dispatch:
+
+permissions:
+  contents: write # This is the key line you were missing!
+
 jobs:
   update-news:
     runs-on: ubuntu-latest
@@ -12,7 +16,7 @@ jobs:
       - name: Install latest dependencies
         run: |
           pip install --upgrade pip
-          pip install -U -q google-generativeai
+          pip install -U google-generativeai
       - name: Run script
         run: python fetch_news.py
         env:
