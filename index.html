@@ -2,34 +2,152 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>AI Trusted News</title>
+    <title>AI Trusted News Hub</title>
     <style>
-        body { font-family: sans-serif; line-height: 1.6; max-width: 800px; margin: 0 auto; padding: 20px; }
-        nav { display: flex; gap: 15px; margin-bottom: 20px; }
-        button { padding: 10px 20px; cursor: pointer; }
-        #news-container { border: 1px solid #ddd; padding: 20px; background: #f9f9f9; }
+        body { font-family: 'Segoe UI', sans-serif; line-height: 1.6; max-width: 900px; margin: 0 auto; padding: 20px; background-color: #fafafa; color: #222; }
+        nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; padding-bottom: 15px; border-bottom: 2px solid #eaeaea; }
+        .nav-buttons { display: flex; gap: 10px; }
+        button { padding: 10px 18px; cursor: pointer; font-weight: bold; border-radius: 4px; border: 1px solid #ccc; background: white; transition: 0.2s; }
+        button:hover { background: #f0f0f0; }
+        .btn-auth { background-color: #007bff; color: white; border: none; }
+        .btn-auth:hover { background-color: #0056b3; }
+        
+        /* Dashboard news category tab bar layout */
+        .tabs-container { display: none; gap: 8px; margin-bottom: 20px; border-bottom: 1px solid #ddd; padding-bottom: 10px; }
+        .tab-btn { background: #eee; color: #555; border: none; padding: 8px 16px; font-size: 14px; }
+        .tab-btn.active { background: #222; color: white; }
+        
+        #news-container { border: 1px solid #ddd; padding: 25px; background: white; border-radius: 6px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .locked-msg { text-align: center; padding: 40px 20px; color: #666; }
+        .news-article { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px dashed #eee; }
+        .news-article:last-child { border: none; margin-bottom: 0; padding-bottom: 0; }
+        .news-title { margin: 0 0 8px 0; color: #111; font-size: 20px; }
+        .news-meta { font-size: 12px; color: #777; margin-bottom: 10px; font-weight: bold; text-transform: uppercase; }
     </style>
 </head>
 <body>
 
-    <nav>
-        <button onclick="location.reload()">Refresh News</button>
-        <button onclick="window.location.href='login.html'">Login</button>
-    </nav>
+<nav>
+    <h1 style="margin:0; font-size: 24px; letter-spacing: -0.5px;">AI Trusted News Engine</h1>
+    <div class="nav-buttons">
+        <button id="refresh-btn" onclick="triggerLiveRefresh()">Refresh Live Feed</button>
+        <button id="main-auth-btn" class="btn-auth" onclick="window.location.href='login.html'">Sign up / Log in</button>
+    </div>
+</nav>
 
-    <h1>Latest AI News</h1>
-    <div id="news-container">Loading news from robot...</div>
+<div class="tabs-container" id="category-tabs">
+    <button class="tab-btn active" onclick="switchCategory('all', this)">All Live News</button>
+    <button class="tab-btn" onclick="switchCategory('tech', this)">Technology AI</button>
+    <button class="tab-btn" onclick="switchCategory('business', this)">Global Business</button>
+    <button class="tab-btn" onclick="switchCategory('science', this)">Science & Space</button>
+</div>
 
-    <script>
-        fetch('news_data.json')
-            .then(response => response.json())
+<div id="news-container">
+    <div class="locked-msg">
+        <h3>🔒 Content Premium Access Required</h3>
+        <p>Please click the <b>Sign up / Log in</b> button above to authenticate your email address and unlock the live AI analysis panel.</p>
+    </div>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyC3o1FGG5wdp-bFD6BIZRRvrxhzgsVsMSY",
+      authDomain: "new-projects-d395e.firebaseapp.com",
+      projectId: "new-projects-d395e",
+      storageBucket: "new-projects-d395e.firebasestorage.app",
+      messagingSenderId: "75698298535",
+      appId: "1:75698298535:web:f2a57bf32b5fc1ab184582",
+      measurementId: "G-5J3K4NRJYN"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth();
+    let localNewsCache = [];
+
+    // Global listeners managing secure dynamic screen changes
+    const mainAuthBtn = document.getElementById("main-auth-btn");
+    const tabsContainer = document.getElementById("category-tabs");
+    const container = document.getElementById("news-container");
+
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            // User logged in: transform layout to premium dashboard
+            mainAuthBtn.innerText = "Log Out";
+            mainAuthBtn.className = "button"; 
+            mainAuthBtn.onclick = () => { signOut(auth).then(() => location.reload()); };
+            tabsContainer.style.display = "flex";
+            loadNewsFromSource();
+        } else {
+            // User logged out: lock data visibility interfaces
+            mainAuthBtn.innerText = "Sign up / Log in";
+            mainAuthBtn.className = "btn-auth";
+            mainAuthBtn.onclick = () => { window.location.href = 'login.html'; };
+            tabsContainer.style.display = "none";
+        }
+    });
+
+    // Network connection logic fetching backend pipeline files
+    window.loadNewsFromSource = function() {
+        container.innerHTML = "<div>Analyzing and downloading live streams from AI data channels...</div>";
+        fetch('news_data.json?nocache=' + new Date().getTime())
+            .then(res => res.json())
             .then(data => {
-                document.getElementById('news-container').innerHTML = data.news.replace(/\n/g, '<br>');
+                // Read structured articles arrays, or adapt plain format smoothly
+                localNewsCache = Array.isArray(data.news) ? data.news : [
+                    { title: "AI Live Analytical Broadcast Feed", category: "tech", content: data.news || "No active content loaded yet." }
+                ];
+                renderArticles('all');
             })
-            .catch(error => {
-                document.getElementById('news-container').innerText = "Could not load news. Check if the JSON file exists.";
+            .catch(err => {
+                container.innerHTML = "<div style='color:red;'>Failed to pull live content: Setup your automation file or wait for the system generation sequence.</div>";
             });
-    </script>
+    }
 
+    // Dynamic UI sorting component rendering news filtering onto screens
+    window.renderArticles = function(category, targetElement) {
+        if(!localNewsCache || localNewsCache.length === 0) return;
+        
+        let htmlContent = "";
+        let filtered = localNewsCache;
+        
+        if (category !== 'all') {
+            filtered = localNewsCache.filter(item => item.category && item.category.toLowerCase() === category);
+        }
+
+        if(filtered.length === 0) {
+            htmlContent = `<div class='locked-msg'><p>No live AI articles discovered inside the '${category}' pipeline over the past 24 hours.</p></div>`;
+        } else {
+            filtered.forEach(art => {
+                htmlContent += `
+                    <div class="news-article">
+                        <div class="news-meta">Category Channel: ${art.category || 'General'}</div>
+                        <h3 class="news-title">${art.title}</h3>
+                        <p class="news-body">${art.content ? art.content.replace(/\n/g, '<br>') : ''}</p>
+                    </div>
+                `;
+            });
+        }
+        container.innerHTML = htmlContent;
+    }
+
+    // Interactive button handling clean interface navigation adjustments
+    window.switchCategory = function(category, btnElement) {
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        btnElement.classList.add('active');
+        renderArticles(category);
+    }
+
+    // Live Instant Network Reload Action
+    window.triggerLiveRefresh = function() {
+        if (!auth.currentUser) {
+            alert("Please log in first to pull down live server data streams.");
+            return;
+        }
+        loadNewsFromSource();
+    }
+</script>
 </body>
 </html>
