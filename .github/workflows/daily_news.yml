@@ -1,30 +1,41 @@
-name: Daily News Update
+name: Live AI News Auto-Update
+
 on:
-  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * *' # Fires automatically every day at midnight UTC
+  workflow_dispatch: # Allows you to trigger it manually with a single click anytime
 
 permissions:
-  contents: write # This is the key line you were missing!
+  contents: write
 
 jobs:
-  update-news:
+  run-ai-writer:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v4
+      - name: Check out repo files
+        uses: actions/checkout@v4
+
+      - name: Set up Python environment
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
-      - name: Install latest dependencies
-        run: |
-          pip install --upgrade pip
-          pip install -U google-generativeai
-      - name: Run script
-        run: python fetch_news.py
+          python-version: '3.10'
+
+      - name: Install required AI tools
+        run: pip install google-generativeai
+
+      - name: Run AI Agent Research
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-      - name: Commit files
+        run: python generate_news.py
+
+      - name: Save and Publish news to your live website
         run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
+          git config --global user.name "AI Editorial Robot"
+          git config --global user.email "actions@github.com"
           git add news_data.json
-          git diff-index --quiet HEAD || git commit -m "Update news"
-          git push
+          if git diff --staged --quiet; then
+            echo "No new changes found today."
+          else
+            git commit -m "Automated Sync: Updated webpage with today's live breaking news"
+            git push
+          fi
