@@ -2,80 +2,124 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Sign Up & Login</title>
+    <title>Access AI Trusted News</title>
     <style>
-        body { font-family: sans-serif; padding: 20px; max-width: 400px; margin: 0 auto; line-height: 1.6; }
-        input { display: block; width: 100%; padding: 10px; margin: 10px 0; box-sizing: border-box; }
-        button { width: 100%; padding: 10px; margin: 5px 0; cursor: pointer; font-weight: bold; }
-        .divider { text-align: center; margin: 15px 0; color: #666; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 30px; max-width: 420px; margin: 40px auto; line-height: 1.6; background-color: #f9f9f9; color: #333; }
+        .card { background: white; padding: 25px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        h2 { text-align: center; margin-bottom: 20px; color: #111; }
+        label { font-weight: bold; display: block; margin-top: 15px; font-size: 14px; }
+        input { display: block; width: 100%; padding: 12px; margin: 6px 0 12px 0; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; font-size: 15px; }
+        button { width: 100%; padding: 12px; margin: 8px 0; cursor: pointer; font-weight: bold; border-radius: 4px; border: none; font-size: 15px; transition: 0.2s; }
+        .btn-primary { background-color: #007bff; color: white; }
+        .btn-primary:hover { background-color: #0056b3; }
+        .btn-dark { background-color: #222; color: white; }
+        .btn-dark:hover { background-color: #000; }
+        .btn-google { background-color: #4285F4; color: white; }
+        .btn-google:hover { background-color: #357ae8; }
+        .divider { text-align: center; margin: 20px 0; color: #777; font-size: 14px; position: relative; }
+        .toggle-link { text-align: center; margin-top: 15px; font-size: 14px; color: #007bff; cursor: pointer; }
+        .toggle-link:hover { text-decoration: underline; }
+        .back-link { display: inline-block; margin-top: 15px; text-decoration: none; color: #555; font-size: 14px; }
     </style>
 </head>
 <body>
 
-    <h2>Access AI Trusted News</h2>
+<div class="card">
+    <h2 id="form-title">Log In to Your Account</h2>
     
-    <button id="google-btn" style="background-color: #4285F4; color: white; border: none;">
-        Continue with Google
-    </button>
+    <button id="google-btn" class="btn-google">Continue with Google</button>
 
     <div class="divider">─ OR ─</div>
 
     <div id="auth-form">
-        <label for="email">Gmail Address:</label>
-        <input type="email" id="email" placeholder="name@gmail.com">
-        <button id="signup-btn" style="background-color: #333; color: white; border: none;">
-            Sign Up via Email Verification
-        </button>
+        <label for="email">Email Address</label>
+        <input type="email" id="email" placeholder="you@example.com">
+        
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="••••••••">
+
+        <button id="login-btn" class="btn-primary">Sign In</button>
+        <button id="signup-btn" class="btn-dark" style="display: none;">Create Account & Verify</button>
     </div>
 
-    <br><br>
-    <a href="index.html">← Back to Home</a>
+    <div id="toggle-text" class="toggle-link">Need an account? Sign Up instead</div>
+    <center><a href="index.html" class="back-link">← Cancel and Back Home</a></center>
+</div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
-        import { getAuth, GoogleAuthProvider, signInWithPopup, createUserWithEmailAndPassword, sendEmailVerification } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
+    import { getAuth, GoogleAuthProvider, signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
 
-        // Your real Firebase Keys are automatically added below:
-        const firebaseConfig = {
-          apiKey: "AIzaSyC3o1FGG5wdp-bFD6BIZRRvrxhzgsVsMSY",
-          authDomain: "new-projects-d395e.firebaseapp.com",
-          projectId: "new-projects-d395e",
-          storageBucket: "new-projects-d395e.firebasestorage.app",
-          messagingSenderId: "75698298535",
-          appId: "1:75698298535:web:f2a57bf32b5fc1ab184582",
-          measurementId: "G-5J3K4NRJYN"
-        };
+    const firebaseConfig = {
+      apiKey: "AIzaSyC3o1FGG5wdp-bFD6BIZRRvrxhzgsVsMSY",
+      authDomain: "new-projects-d395e.firebaseapp.com",
+      projectId: "new-projects-d395e",
+      storageBucket: "new-projects-d395e.firebasestorage.app",
+      messagingSenderId: "75698298535",
+      appId: "1:75698298535:web:f2a57bf32b5fc1ab184582",
+      measurementId: "G-5J3K4NRJYN"
+    };
 
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth();
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth();
+    let isLoginMode = true;
 
-        // Google Sign-In Action
-        const provider = new GoogleAuthProvider();
-        document.getElementById("google-btn").onclick = () => {
-            signInWithPopup(auth, provider).then((result) => {
-                alert("Success! Welcome online, " + result.user.displayName);
-                window.location.href = "index.html";
-            }).catch(err => alert("Google Login Error: " + err.message));
-        };
+    // Toggle Interface Display Mode between Log In and Sign Up
+    const toggleText = document.getElementById("toggle-text");
+    const formTitle = document.getElementById("form-title");
+    const loginBtn = document.getElementById("login-btn");
+    const signupBtn = document.getElementById("signup-btn");
 
-        // Email Registration Action
-        document.getElementById("signup-btn").onclick = () => {
-            const emailVal = document.getElementById("email").value;
-            if (!emailVal) return alert("Please type your Gmail address first.");
+    toggleText.onclick = () => {
+        isLoginMode = !isLoginMode;
+        if (isLoginMode) {
+            formTitle.innerText = "Log In to Your Account";
+            loginBtn.style.display = "block";
+            signupBtn.style.display = "none";
+            toggleText.innerText = "Need an account? Sign Up instead";
+        } else {
+            formTitle.innerText = "Create New Account";
+            loginBtn.style.display = "none";
+            signupBtn.style.display = "block";
+            toggleText.innerText = "Already have an account? Log In instead";
+        }
+    };
 
-            const passwordVal = prompt("Create a private password for your account registration:");
-            if (!passwordVal || passwordVal.length < 6) return alert("Your password configuration must be at least 6 characters.");
+    // OAuth Provider Flow
+    const provider = new GoogleAuthProvider();
+    document.getElementById("google-btn").onclick = () => {
+        signInWithPopup(auth, provider).then(() => {
+            window.location.href = "index.html";
+        }).catch(err => alert("Google Error: " + err.message));
+    };
 
-            createUserWithEmailAndPassword(auth, emailVal, passwordVal)
-                .then((userCredential) => {
-                    sendEmailVerification(userCredential.user)
-                        .then(() => {
-                            alert("Success! A validation verification link has been dispatched to " + emailVal + ". Click that link inside your inbox to confirm, then you can login!");
-                            window.location.href = "index.html";
-                        });
-                })
-                .catch(err => alert("Registration Setup Error: " + err.message));
-        };
-    </script>
+    // Returning User Sign In Execution
+    loginBtn.onclick = () => {
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+        if(!email || !password) return alert("Please fill out all login fields.");
+
+        signInWithEmailAndPassword(auth, email, password)
+            .then(() => { window.location.href = "index.html"; })
+            .catch(err => alert("Login Failed: " + err.message));
+    };
+
+    // New User Account Creation & Dispatched Verification Email
+    signupBtn.onclick = () => {
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+        if(!email || !password) return alert("Please set your signup credentials.");
+        if(password.length < 6) return alert("Password must be at least 6 characters.");
+
+        createUserWithEmailAndPassword(auth, email, password)
+            .then((userCredential) => {
+                sendEmailVerification(userCredential.user).then(() => {
+                    alert("Account registered successfully! A confirmation validation link has been sent to your email inbox.");
+                    window.location.href = "index.html";
+                });
+            })
+            .catch(err => alert("Registration Failed: " + err.message));
+    };
+</script>
 </body>
 </html>
