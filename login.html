@@ -1,14 +1,81 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Admin Login</title>
+    <meta charset="UTF-8">
+    <title>Sign Up & Login</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; max-width: 400px; margin: 0 auto; line-height: 1.6; }
+        input { display: block; width: 100%; padding: 10px; margin: 10px 0; box-sizing: border-box; }
+        button { width: 100%; padding: 10px; margin: 5px 0; cursor: pointer; font-weight: bold; }
+        .divider { text-align: center; margin: 15px 0; color: #666; }
+    </style>
 </head>
 <body>
-    <h1>Admin Login</h1>
-    <input type="text" placeholder="Username">
-    <input type="password" placeholder="Password">
-    <button>Login</button>
+
+    <h2>Access AI Trusted News</h2>
+    
+    <button id="google-btn" style="background-color: #4285F4; color: white; border: none;">
+        Continue with Google
+    </button>
+
+    <div class="divider">─ OR ─</div>
+
+    <div id="auth-form">
+        <label for="email">Gmail Address:</label>
+        <input type="email" id="email" placeholder="name@gmail.com">
+        <button id="signup-btn" style="background-color: #333; color: white; border: none;">
+            Sign Up via Email Verification
+        </button>
+    </div>
+
     <br><br>
-    <a href="index.html">Back to Home</a>
+    <a href="index.html">← Back to Home</a>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
+        import { getAuth, GoogleAuthProvider, signInWithPopup, createUserWithEmailAndPassword, sendEmailVerification } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
+
+        // Your real Firebase Keys are automatically added below:
+        const firebaseConfig = {
+          apiKey: "AIzaSyC3o1FGG5wdp-bFD6BIZRRvrxhzgsVsMSY",
+          authDomain: "new-projects-d395e.firebaseapp.com",
+          projectId: "new-projects-d395e",
+          storageBucket: "new-projects-d395e.firebasestorage.app",
+          messagingSenderId: "75698298535",
+          appId: "1:75698298535:web:f2a57bf32b5fc1ab184582",
+          measurementId: "G-5J3K4NRJYN"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth();
+
+        // Google Sign-In Action
+        const provider = new GoogleAuthProvider();
+        document.getElementById("google-btn").onclick = () => {
+            signInWithPopup(auth, provider).then((result) => {
+                alert("Success! Welcome online, " + result.user.displayName);
+                window.location.href = "index.html";
+            }).catch(err => alert("Google Login Error: " + err.message));
+        };
+
+        // Email Registration Action
+        document.getElementById("signup-btn").onclick = () => {
+            const emailVal = document.getElementById("email").value;
+            if (!emailVal) return alert("Please type your Gmail address first.");
+
+            const passwordVal = prompt("Create a private password for your account registration:");
+            if (!passwordVal || passwordVal.length < 6) return alert("Your password configuration must be at least 6 characters.");
+
+            createUserWithEmailAndPassword(auth, emailVal, passwordVal)
+                .then((userCredential) => {
+                    sendEmailVerification(userCredential.user)
+                        .then(() => {
+                            alert("Success! A validation verification link has been dispatched to " + emailVal + ". Click that link inside your inbox to confirm, then you can login!");
+                            window.location.href = "index.html";
+                        });
+                })
+                .catch(err => alert("Registration Setup Error: " + err.message));
+        };
+    </script>
 </body>
 </html>
