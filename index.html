@@ -373,7 +373,11 @@
         .article-source-citation a:hover { text-decoration: underline; }
     </style>
 </head>
-<body data-theme="light">
+<body>
+<script>
+    const userStoredPreference = localStorage.getItem("themeSchema") || "light";
+    document.body.setAttribute("data-theme", userStoredPreference);
+</script>
 
 <header>
     <button class="btn-ui" id="auth-btn">Login / Register</button>
@@ -462,14 +466,23 @@
         { id: "p3", category: "Economy", title: "Inflation Core Targets Hit Desired Stabilizing Bands Early", date: "2026-06-12", time: "09:30 UTC", content: "Live consumer pricing index arrays across global logistics channels mark immediate cooling vectors, confirming predictive economic modeling calculations.", source: "https://bloomberg.com" }
     ];
 
-    // Upgraded Theme Switch Script
+    // Initialize Theme Switch Script State Elements
     const themeToggleBtn = document.getElementById("theme-toggle");
     const themeText = document.getElementById("theme-text");
+    
+    // Sync UI text string to match the current data-attribute parsed from inline script
+    const currentThemeState = document.body.getAttribute("data-theme");
+    themeText.innerText = currentThemeState === "light" ? "Dark Mode" : "Light Mode";
+
     themeToggleBtn.onclick = () => {
-        const currentTheme = document.body.getAttribute("data-theme");
-        const invertedTheme = currentTheme === "light" ? "dark" : "light";
-        document.body.setAttribute("data-theme", invertedTheme);
-        themeText.innerText = invertedTheme === "light" ? "Dark Mode" : "Light Mode";
+        const activeTheme = document.body.getAttribute("data-theme");
+        const nextTheme = activeTheme === "light" ? "dark" : "light";
+        
+        document.body.setAttribute("data-theme", nextTheme);
+        themeText.innerText = nextTheme === "light" ? "Dark Mode" : "Light Mode";
+        
+        // Save choice cleanly into localStorage
+        localStorage.setItem("themeSchema", nextTheme);
     };
 
     // Firebase Session Observer
