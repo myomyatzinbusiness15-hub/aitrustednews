@@ -4,119 +4,195 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Global Intelligence Dispatch</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
     <style>
-        /* CSS Theme Variables */
+        /* Modern System Custom Design Properties */
         :root {
-            --bg-color: #f4f7f6;
-            --text-color: #1a202c;
-            --header-bg: #ffffff;
-            --tab-bg: #0f172a; /* Dark Navy */
+            --bg-global: #f8fafc;
+            --bg-card: #ffffff;
+            --bg-header: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --border-subtle: #e2e8f0;
+            --color-primary: #0f172a; /* Sophisticated Slate Black */
+            --color-accent: #2563eb;  /* High-Trust Intelligence Blue */
+            --tab-bg: #1e293b;
             --tab-text: #ffffff;
-            --card-bg: #ffffff;
-            --border-color: #e2e8f0;
-            --accent: #007bff;
-            --teaser-gradient: linear-gradient(135deg, #ffffff 0%, #e1e7f0 100%);
+            --teaser-card-bg: #ffffff;
+            --shadow-sm: 0 1px 3px rgba(15,23,42,0.03), 0 1px 2px rgba(15,23,42,0.02);
+            --shadow-md: 0 10px 25px -5px rgba(15,23,42,0.05), 0 8px 10px -6px rgba(15,23,42,0.05);
         }
 
         [data-theme="dark"] {
-            --bg-color: #0b111a;
-            --text-color: #f1f5f9;
-            --header-bg: #111827;
-            --card-bg: #1f2937;
-            --border-color: #374151;
-            --teaser-gradient: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+            --bg-global: #090d16;
+            --bg-card: #111827;
+            --bg-header: #111827;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-subtle: #1f2937;
+            --color-primary: #f8fafc;
+            --tab-bg: #374151;
+            --tab-text: #f8fafc;
+            --teaser-card-bg: #111827;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.2);
+            --shadow-md: 0 10px 30px rgba(0,0,0,0.3);
         }
 
         body { 
-            font-family: 'Segoe UI', Tahoma, sans-serif; 
+            font-family: 'Inter', system-ui, sans-serif; 
             margin: 0; 
             padding: 0; 
-            background-color: var(--bg-color); 
-            color: var(--text-color); 
-            transition: background 0.3s ease, color 0.3s ease;
+            background-color: var(--bg-global); 
+            color: var(--text-main); 
+            transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1), color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* Top Navigation Header bar */
+        /* Top Navigation Header */
         header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px 40px;
-            background: var(--header-bg);
-            border-bottom: 1px solid var(--border-color);
+            padding: 18px 6%;
+            background: var(--bg-header);
+            border-bottom: 1px solid var(--border-subtle);
+            box-shadow: var(--shadow-sm);
         }
 
         .main-title {
-            font-family: 'Georgia', serif;
+            font-family: 'Playfair Display', serif;
             font-size: 28px;
-            font-weight: bold;
+            font-weight: 700;
+            letter-spacing: -0.5px;
             margin: 0;
+            color: var(--color-primary);
         }
 
         .btn-ui {
-            padding: 8px 16px;
+            padding: 10px 20px;
             cursor: pointer;
             border-radius: 6px;
-            border: 1px solid var(--border-color);
-            background: var(--header-bg);
-            color: var(--text-color);
+            border: 1px solid var(--border-subtle);
+            background: var(--bg-card);
+            color: var(--text-main);
+            font-size: 13px;
             font-weight: 600;
-            transition: 0.2s;
+            letter-spacing: -0.1px;
+            transition: all 0.2s ease;
+            box-shadow: var(--shadow-sm);
         }
-        .btn-ui:hover { background: rgba(0,0,0,0.05); }
+        .btn-ui:hover { 
+            background: var(--text-main); 
+            color: var(--bg-header);
+            border-color: var(--text-main);
+            transform: translateY(-1px);
+        }
 
         /* ========================================================
            STATE 1: ENCHANTING PUBLIC TEASER (BEFORE LOGIN)
            ======================================================== */
         .public-teaser-container {
             display: block;
-            padding: 40px 10%;
-            text-align: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 4%;
         }
 
-        .teaser-welcome-msg { margin-bottom: 40px; }
-        .teaser-welcome-msg h2 { font-size: 32px; margin-bottom: 10px; }
-        .teaser-welcome-msg p { color: #666; font-size: 16px; }
+        .teaser-welcome-msg { 
+            text-align: center; 
+            margin-bottom: 50px; 
+        }
+        .teaser-welcome-msg h2 { 
+            font-family: 'Playfair Display', serif; 
+            font-size: 40px; 
+            margin: 0 0 15px 0; 
+            letter-spacing: -0.5px;
+        }
+        .teaser-welcome-msg p { 
+            color: var(--text-muted); 
+            font-size: 17px; 
+            max-width: 650px; 
+            margin: 0 auto;
+            line-height: 1.6;
+        }
 
         .teaser-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-            margin-bottom: 40px;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+            margin-bottom: 50px;
         }
 
         .teaser-card {
-            background: var(--teaser-gradient);
-            padding: 25px;
-            border-radius: 14px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            text-align: left;
-            border-top: 4px solid var(--accent);
+            background: var(--teaser-card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-subtle);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .teaser-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 35px -5px rgba(15,23,42,0.08);
         }
 
         .teaser-tag {
             font-size: 11px;
-            font-weight: bold;
+            font-weight: 700;
             text-transform: uppercase;
-            color: var(--accent);
-            background: rgba(0, 123, 255, 0.1);
-            padding: 4px 8px;
+            letter-spacing: 1px;
+            color: var(--color-accent);
+            background: rgba(37, 99, 235, 0.08);
+            padding: 5px 10px;
             border-radius: 4px;
+            display: inline-block;
         }
 
-        .teaser-card h3 { font-size: 18px; margin: 15px 0 10px 0; line-height: 1.4; }
-        .teaser-card p { font-size: 14px; color: #555; margin: 0; line-height: 1.5; }
+        .teaser-card h3 { 
+            font-family: 'Playfair Display', serif; 
+            font-size: 20px; 
+            margin: 20px 0 12px 0; 
+            line-height: 1.4; 
+            color: var(--text-main);
+        }
+        .teaser-card p { 
+            font-size: 14.5px; 
+            color: var(--text-muted); 
+            margin: 0; 
+            line-height: 1.6; 
+        }
+
+        .cta-lockbox {
+            background: var(--bg-card); 
+            padding: 40px; 
+            border-radius: 14px; 
+            border: 1px solid var(--border-subtle);
+            box-shadow: var(--shadow-md);
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        .cta-lockbox h4 {
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+            margin: 0 0 10px 0;
+        }
 
         /* ========================================================
            STATE 2: PREMIUM ANALYTICAL DASHBOARD (AFTER LOGIN)
            ======================================================== */
         .premium-dashboard-container {
-            display: none; /* Hidden completely until authenticated */
+            display: none; 
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2%;
         }
 
-        /* 10 Category Rounded Grid Tabs layout */
+        /* 10 Category Grid Section */
         .tabs-section {
-            padding: 30px 5%;
+            padding: 30px 2%;
             display: grid;
             grid-template-columns: repeat(5, 1fr);
             gap: 12px;
@@ -125,82 +201,135 @@
         .tab-btn {
             background-color: var(--tab-bg);
             color: var(--tab-text);
-            border: none;
-            padding: 14px;
+            border: 1px solid transparent;
+            padding: 16px;
             border-radius: 12px;
-            font-size: 15px;
-            font-weight: bold;
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 0.3px;
             cursor: pointer;
-            transition: transform 0.2s, opacity 0.2s;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: var(--shadow-sm);
         }
-        .tab-btn:hover { transform: translateY(-2px); opacity: 0.95; }
-        .tab-btn.active { outline: 3px solid var(--accent); background-color: #1e293b; }
+        .tab-btn:hover { 
+            transform: translateY(-2px); 
+            box-shadow: var(--shadow-md);
+            opacity: 0.95;
+        }
+        .tab-btn.active { 
+            background-color: var(--color-accent);
+            color: #ffffff;
+            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);
+        }
 
-        /* Workspace Splitscreen view */
+        /* Splitscreen Main Reading Board */
         .workspace-layout {
-            padding: 0 5% 40px 5%;
+            padding: 0 2% 40px 2%;
             display: grid;
-            grid-template-columns: 360px 1fr;
-            gap: 25px;
-            height: 600px;
+            grid-template-columns: 380px 1fr;
+            gap: 30px;
+            height: 720px;
         }
 
-        /* Left: Headline Cards stack selection board */
+        /* Left side: News Column Stream */
         .headline-stack {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 14px;
             overflow-y: auto;
-            padding: 15px;
+            padding: 18px;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 14px;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        /* Premium Custom Scrollbars */
+        .headline-stack::-webkit-scrollbar, .article-viewscreen::-webkit-scrollbar {
+            width: 6px;
+        }
+        .headline-stack::-webkit-scrollbar-thumb, .article-viewscreen::-webkit-scrollbar-thumb {
+            background: var(--border-subtle);
+            border-radius: 10px;
         }
 
         .headline-card {
-            padding: 15px;
-            background: rgba(0,0,0,0.02);
-            border-radius: 8px;
+            padding: 18px;
+            background: var(--bg-global);
+            border-radius: 10px;
             border: 1px solid transparent;
             cursor: pointer;
-            transition: 0.2s;
+            transition: all 0.2s ease;
             text-align: left;
         }
-        .headline-card:hover { border-color: var(--accent); background: rgba(0, 123, 255, 0.05); }
-        .headline-card.active-card { border-left: 4px solid var(--accent); background: rgba(0, 123, 255, 0.08); }
-        .headline-card h4 { margin: 0 0 8px 0; font-size: 15px; line-height: 1.4; }
-        .headline-card span { font-size: 11px; color: #777; font-weight: 500; }
+        .headline-card:hover { 
+            background: var(--bg-card);
+            border-color: var(--border-subtle);
+            box-shadow: var(--shadow-sm);
+        }
+        .headline-card.active-card { 
+            border-color: var(--color-accent); 
+            background: var(--bg-card);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+        }
+        .headline-card h4 { 
+            font-family: 'Playfair Display', serif;
+            margin: 0 0 10px 0; 
+            font-size: 16px; 
+            line-height: 1.4; 
+            color: var(--text-main);
+        }
+        .headline-card span { 
+            font-size: 11px; 
+            color: var(--text-muted); 
+            font-weight: 500; 
+            letter-spacing: 0.2px;
+        }
 
-        /* Right: Interactive Reading Viewscreen Monitor */
+        /* Right side: News Viewscreen Window */
         .article-viewscreen {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 35px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 14px;
+            padding: 45px;
             overflow-y: auto;
+            box-shadow: var(--shadow-sm);
         }
 
         .article-viewscreen-placeholder {
             text-align: center;
-            color: #777;
-            padding-top: 180px;
+            color: var(--text-muted);
+            padding-top: 220px;
+        }
+        .article-viewscreen-placeholder h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            margin-bottom: 8px;
+            color: var(--text-main);
         }
 
-        .article-header { border-bottom: 2px solid var(--border-color); padding-bottom: 20px; margin-bottom: 20px; }
-        .article-meta-badge { font-size: 12px; font-weight: bold; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
-        .article-headline { font-size: 28px; margin: 0 0 12px 0; font-family: 'Georgia', serif; }
-        .article-timestamps { font-size: 13px; color: #666; }
+        .article-header { border-bottom: 1px solid var(--border-subtle); padding-bottom: 24px; margin-bottom: 28px; }
+        .article-meta-badge { font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--color-accent); letter-spacing: 1px; margin-bottom: 12px; }
+        .article-headline { font-size: 36px; margin: 0 0 16px 0; font-family: 'Playfair Display', serif; line-height: 1.25; letter-spacing: -0.5px; color: var(--color-primary); }
+        .article-timestamps { font-size: 13px; color: var(--text-muted); }
 
-        .article-bodytext { font-size: 16px; line-height: 1.8; white-space: pre-line; color: var(--text-color); }
+        .article-bodytext { 
+            font-size: 16.5px; 
+            line-height: 1.85; 
+            white-space: pre-line; 
+            color: var(--text-main); 
+            letter-spacing: -0.05px;
+        }
         
         .article-source-citation {
-            margin-top: 35px;
-            padding: 15px 20px;
-            background: rgba(0, 0, 0, 0.04);
-            border-radius: 8px;
-            font-size: 14px;
+            margin-top: 45px;
+            padding: 20px 25px;
+            background: var(--bg-global);
+            border-radius: 10px;
+            font-size: 13.5px;
+            border: 1px solid var(--border-subtle);
         }
-        .article-source-citation a { color: var(--accent); text-decoration: none; font-weight: bold; }
+        .article-source-citation a { color: var(--color-accent); text-decoration: none; font-weight: 600; }
         .article-source-citation a:hover { text-decoration: underline; }
     </style>
 </head>
@@ -214,15 +343,17 @@
 
 <div id="public-teaser-view" class="public-teaser-container">
     <div class="teaser-welcome-msg">
-        <h2>🔒 Strategic Global Telemetry Feed</h2>
-        <p>Analyze real-time events interpreted and structured through deep computational intelligence models.</p>
+        <h2>Strategic Global Telemetry Feed</h2>
+        <p>Access real-time world events cleanly structured and interpreted through deep automated computational intelligence matrix pipelines.</p>
     </div>
+    
     <div class="teaser-grid" id="teaser-cards-root">
         </div>
-    <div style="background: rgba(0,0,0,0.02); padding: 25px; border-radius: 12px; border: 1px dashed #ccc;">
-        <h4 style="margin: 0 0 10px 0;">Unlock Access to Full Comprehensive Reports</h4>
-        <p style="margin: 0 0 20px 0; font-size: 14px; color:#555;">Authenticate your account to view all 10 dedicated channels packed with complete citations and source arrays.</p>
-        <button class="btn-ui" style="background: var(--accent); color: white; border: none; padding: 12px 24px;" onclick="window.location.href='login.html'">Unlock Premium Platform Dashboard</button>
+    
+    <div class="cta-lockbox">
+        <h4>Unlock Comprehensive Intelligence Dossiers</h4>
+        <p style="margin: 0 0 25px 0; font-size: 14.5px; color: var(--text-muted); line-net: 1.5;">Authenticate your account profile credentials to gain entry into all 10 verified tracking segments built with exhaustive data strings.</p>
+        <button class="btn-ui" style="background: var(--color-accent); color: white; border: none; padding: 14px 28px; font-size: 14px; border-radius: 8px;" onclick="window.location.href='login.html'">Unlock Verified Platform Access</button>
     </div>
 </div>
 
@@ -242,12 +373,12 @@
 
     <div class="workspace-layout">
         <div class="headline-stack" id="headline-stack-root">
-            <p style="text-align: center; color: #777; margin-top: 200px;">Select an intelligence vertical category tab above.</p>
+            <p style="text-align: center; color: var(--text-muted); margin-top: 220px; font-size: 14px;">Select an active channel category above to unpack data points.</p>
         </div>
         <div class="article-viewscreen" id="article-viewscreen-root">
             <div class="article-viewscreen-placeholder">
-                <h3>📖 Intelligence Terminal Empty</h3>
-                <p>Click any active headline card summary from the left stack sequence to deploy complete core article vectors here.</p>
+                <h3>Intelligence Terminal Offline</h3>
+                <p>Click any incoming briefing headline summary from the left stack sequence to load full verification matrices here.</p>
             </div>
         </div>
     </div>
@@ -271,23 +402,22 @@
     const auth = getAuth();
     let newsDataCache = [];
 
-    // Static 5 Enchanting Public Teasers Array
+    // The 5 Enchanting Pre-Login Teasers
     const publicTeasers = [
         { category: "AI", title: "Synthesis Models Break Latency Records Across Enterprise Clouds", excerpt: "Newly optimized multi-agent architectures achieve rapid operational loops, dropping system processing resource costs by 40%." },
-        { category: "War", title: "Automated Border Shield Defenses Clear Tactical Simulations", category: "War", excerpt: "Strategic real-time telemetry systems demonstrate absolute interception accuracy metrics against swarm drone testing patterns." },
+        { category: "War", title: "Automated Border Shield Defenses Clear Tactical Simulations", excerpt: "Strategic real-time telemetry systems demonstrate absolute interception accuracy metrics against swarm drone testing patterns." },
         { category: "Economy", title: "Decentralized Settlement Systems Move to Core Sovereign Reserves", excerpt: "Macroeconomic analytical indicators mark an unpredicted shift towards automated liquidity assets by key global banking blocks." },
         { category: "Crypto", title: "Zero-Knowledge Hardware Blocks Complete Cross-Chain Isolation", excerpt: "Next-gen cryptographic chips effectively eliminate transaction exploitation risks across web3 validation networks." },
         { category: "Science", title: "Sub-Orbital Automation Fleet Begins High-Velocity Testing Phase", excerpt: "Heavy cargo staging launch platforms clear secondary ignition thresholds, targeting immediate lunar delivery drops." }
     ];
 
-    // Local Premium Fallback Database
     const fallbackPremiumNews = [
         { id: "p1", category: "AI", title: "Gemini Engine Achieves Persistent Analytical Context Retention", date: "2026-06-12", time: "14:05 UTC", content: "Deep learning models have formally integrated long-range state storage loops. This enables persistent tracking of global macro trends without contextual decay across continuous deployment pipelines.", source: "https://techcrunch.com" },
         { id: "p2", category: "War", title: "Defensive Cyber Clusters Isolate High-Value Grid Networks", date: "2026-06-11", time: "22:18 UTC", content: "Following automated attempts to break central routing hubs, protective system grids immediately executed partition rules, successfully shielding core tracking assets.", source: "https://wired.com" },
         { id: "p3", category: "Economy", title: "Inflation Core Targets Hit Desired Stabilizing Bands Early", date: "2026-06-12", time: "09:30 UTC", content: "Live consumer pricing index arrays across global logistics channels mark immediate cooling vectors, confirming predictive economic modeling calculations.", source: "https://bloomberg.com" }
     ];
 
-    // Theme Switch Adjustment Loop
+    // Theme Switch Logic
     const themeToggleBtn = document.getElementById("theme-toggle");
     themeToggleBtn.onclick = () => {
         const currentTheme = document.body.getAttribute("data-theme");
@@ -296,21 +426,19 @@
         themeToggleBtn.innerText = invertedTheme === "light" ? "Dark Mode" : "Light Mode";
     };
 
-    // Firebase Central Session Tracking Observer
+    // Firebase Session Observer
     onAuthStateChanged(auth, (user) => {
         const authBtn = document.getElementById("auth-btn");
         const publicView = document.getElementById("public-teaser-view");
         const premiumView = document.getElementById("premium-dashboard-view");
 
         if (user) {
-            // Logged In Layout Trigger
             authBtn.innerText = "Log Out";
             authBtn.onclick = () => signOut(auth).then(() => location.reload());
             publicView.style.display = "none";
             premiumView.style.display = "block";
             pullPremiumNews();
         } else {
-            // Logged Out Layout Trigger
             authBtn.innerText = "Login / Register";
             authBtn.onclick = () => window.location.href = 'login.html';
             publicView.style.display = "block";
@@ -319,7 +447,6 @@
         }
     });
 
-    // Populate the 5 high-enchantment preview items
     function buildPublicTeasers() {
         const root = document.getElementById("teaser-cards-root");
         root.innerHTML = publicTeasers.map(t => `
@@ -331,7 +458,6 @@
         `).join('');
     }
 
-    // Pull verified premium content array down
     function pullPremiumNews() {
         fetch('news_data.json?nocache=' + Date.now())
             .then(res => res.json())
@@ -343,7 +469,6 @@
             });
     }
 
-    // Handles category tab changes
     window.handleTabClick = (category, tabElement) => {
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
         if (tabElement) tabElement.classList.add('active');
@@ -352,7 +477,7 @@
         const stackRoot = document.getElementById("headline-stack-root");
 
         if (filteredNews.length === 0) {
-            stackRoot.innerHTML = `<p style="text-align:center; padding:50px 10px; color:#777; font-size:14px;">No active reports recorded in the '${category}' directory pipeline today.</p>`;
+            stackRoot.innerHTML = `<p style="text-align:center; padding:50px 10px; color:var(--text-muted); font-size:13.5px;">No active entries mapped within the '${category}' directory vector folder today.</p>`;
             return;
         }
 
@@ -364,7 +489,6 @@
         `).join('');
     };
 
-    // Renders full selected text vectors safely onto screen boards
     window.renderTargetArticle = (articleId) => {
         document.querySelectorAll('.headline-card').forEach(c => c.classList.remove('active-card'));
         const activeCard = document.getElementById(`card-${articleId}`);
@@ -377,9 +501,9 @@
 
         viewscreenRoot.innerHTML = `
             <div class="article-header">
-                <div class="article-meta-badge">Intelligence Stream // ${report.category}</div>
+                <div class="article-meta-badge">Intelligence Stream File // ${report.category}</div>
                 <h2 class="article-headline">${report.title}</h2>
-                <div class="article-timestamps"><b>Compiled on:</b> ${report.date} at ${report.time}</div>
+                <div class="article-timestamps"><b>Data Compiled On:</b> ${report.date} — <b>Matrix Time:</b> ${report.time}</div>
             </div>
             <p class="article-bodytext">${report.content}</p>
             <div class="article-source-citation">
